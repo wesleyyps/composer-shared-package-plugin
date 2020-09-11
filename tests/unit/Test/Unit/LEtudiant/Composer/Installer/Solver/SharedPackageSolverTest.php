@@ -15,13 +15,14 @@ use Composer\Package\PackageInterface;
 use LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig;
 use LEtudiant\Composer\Installer\SharedPackageInstaller;
 use LEtudiant\Composer\Installer\Solver\SharedPackageSolver;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
  *
  * @covers \LEtudiant\Composer\Installer\Solver\SharedPackageSolver
  */
-class SharedPackageSolverTest extends \PHPUnit_Framework_TestCase
+class SharedPackageSolverTest extends TestCase
 {
     /**
      * @var SharedPackageInstallerConfig|\PHPUnit_Framework_MockObject_MockObject
@@ -32,7 +33,7 @@ class SharedPackageSolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 

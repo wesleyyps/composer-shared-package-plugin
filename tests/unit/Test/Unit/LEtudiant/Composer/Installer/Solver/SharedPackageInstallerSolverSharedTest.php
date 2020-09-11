@@ -41,7 +41,7 @@ class SharedPackageInstallerSolverSharedTest extends SharedPackageInstallerSolve
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 

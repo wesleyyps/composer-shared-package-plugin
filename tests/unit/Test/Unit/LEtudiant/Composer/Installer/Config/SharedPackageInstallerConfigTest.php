@@ -13,18 +13,19 @@ namespace Test\Unit\LEtudiant\Composer\Installer\Config;
 
 use LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig;
 use LEtudiant\Composer\Installer\SharedPackageInstaller;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
  *
  * @covers \LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig
  */
-class SharedPackageInstallerConfigTest extends \PHPUnit_Framework_TestCase
+class SharedPackageInstallerConfigTest extends TestCase
 {
     /**
      * Delete both env vars
      */
-    protected function tearDown()
+    protected function tearDown():void
     {
         putenv(SharedPackageInstallerConfig::ENV_PARAMETER_VENDOR_DIR);
         putenv(SharedPackageInstallerConfig::ENV_PARAMETER_SYMLINK_BASE_PATH);

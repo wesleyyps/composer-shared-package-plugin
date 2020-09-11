@@ -12,13 +12,14 @@
 namespace Test\Unit\LEtudiant\Composer\Util;
 
 use LEtudiant\Composer\Util\SymlinkFilesystem;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
  *
  * @covers \LEtudiant\Composer\Util\SymlinkFilesystem
  */
-class SymlinkFilesystemTest extends \PHPUnit_Framework_TestCase
+class SymlinkFilesystemTest extends TestCase
 {
     /**
      * @var string
@@ -29,7 +30,7 @@ class SymlinkFilesystemTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 
@@ -40,7 +41,7 @@ class SymlinkFilesystemTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function tearDown()
+    protected function tearDown():void
     {
         if (is_link($this->testDir . '/foo')) {
             unlink($this->testDir . '/foo');

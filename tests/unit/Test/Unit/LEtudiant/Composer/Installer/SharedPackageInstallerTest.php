@@ -19,13 +19,13 @@ use Composer\IO\IOInterface;
 use Composer\Package\Package;
 use Composer\Package\RootPackage;
 use Composer\Repository\InstalledRepositoryInterface;
-use Composer\TestCase;
 use Composer\Util\Filesystem;
 use LEtudiant\Composer\Data\Package\PackageDataManagerInterface;
 use LEtudiant\Composer\Data\Package\SharedPackageDataManager;
 use LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig;
 use LEtudiant\Composer\Installer\SharedPackageInstaller;
 use LEtudiant\Composer\Util\SymlinkFilesystem;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
@@ -98,7 +98,7 @@ class SharedPackageInstallerTest extends TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 
@@ -167,7 +167,7 @@ class SharedPackageInstallerTest extends TestCase
     /**
      * @inheritdoc
      */
-    protected function tearDown()
+    protected function tearDown():void
     {
         $this->fs->removeDirectory($this->vendorDir);
         $this->fs->removeDirectory($this->binDir);

@@ -18,13 +18,14 @@ use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 use LEtudiant\Composer\Installer\SharedPackageInstaller;
 use LEtudiant\Composer\SharedPackagePlugin;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
  *
  * @covers \LEtudiant\Composer\SharedPackagePlugin
  */
-class SharedPackagePluginTest extends \PHPUnit_Framework_TestCase
+class SharedPackagePluginTest extends TestCase
 {
     /**
      * @var Composer
@@ -45,7 +46,7 @@ class SharedPackagePluginTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 

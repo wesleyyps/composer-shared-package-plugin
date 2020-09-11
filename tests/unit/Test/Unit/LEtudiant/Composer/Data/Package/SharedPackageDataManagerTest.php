@@ -15,13 +15,14 @@ use Composer\Composer;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use LEtudiant\Composer\Data\Package\SharedPackageDataManager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
  *
  * @covers \LEtudiant\Composer\Data\Package\SharedPackageDataManager
  */
-class SharedPackageDataManagerTest extends \PHPUnit_Framework_TestCase
+class SharedPackageDataManagerTest extends TestCase
 {
     /**
      * @var string
@@ -42,7 +43,7 @@ class SharedPackageDataManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 
@@ -65,7 +66,7 @@ class SharedPackageDataManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @inheritdoc
      */
-    protected function tearDown()
+    protected function tearDown():void
     {
         $this->clearPackageData();
 
