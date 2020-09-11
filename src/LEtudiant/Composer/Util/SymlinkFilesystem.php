@@ -31,7 +31,7 @@ class SymlinkFilesystem extends Filesystem
         if (!is_link($symlinkPath)) {
             $this->ensureDirectoryExists(dirname($symlinkPath));
 
-            return symlink($sourcePath, $symlinkPath);
+            return $this->symlink($sourcePath, $symlinkPath);
         }
 
         return false;
@@ -57,6 +57,22 @@ class SymlinkFilesystem extends Filesystem
         }
 
         return false;
+    }
+    
+     public function symlink($target, $link) {
+          if ($_SERVER['WINDIR'] || $_SERVER['windir']) {
+                exec('junction "' . $link . '" "' . $target . '"');
+          } else {
+                symlink($target,$link);
+          }
+    }
+
+    public function unlink($link) {
+      if ($_SERVER['WINDIR'] || $_SERVER['windir']) {
+            exec('junction -d "' . $link . '"');
+      } else {
+            unlink($link);
+      }
     }
 
     /**
