@@ -108,7 +108,7 @@ class SharedPackageInstallerTest extends TestCase
 
         $this->composer->setConfig($composerConfig);
 
-        $this->im = $this->getMock('Composer\Installer\InstallationManager');
+        $this->im = $this->getMockBuilder('Composer\Installer\InstallationManager');
         $this->composer->setInstallationManager($this->im);
 
         $this->vendorDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'composer-test-vendor';
@@ -128,7 +128,7 @@ class SharedPackageInstallerTest extends TestCase
 
         $this->dm = $this->getMockBuilder('Composer\Downloader\DownloadManager')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMockBuilder()
         ;
         $this->composer->setDownloadManager($this->dm);
 
@@ -140,7 +140,7 @@ class SharedPackageInstallerTest extends TestCase
         );
 
         /** @var RootPackage|\PHPUnit_Framework_MockObject_MockObject $package */
-        $package = $this->getMock('Composer\Package\RootPackageInterface');
+        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface');
         $package
             ->expects($this->any())
             ->method('getExtra')
@@ -148,12 +148,12 @@ class SharedPackageInstallerTest extends TestCase
         ;
         $this->composer->setPackage($package);
 
-        $this->repository = $this->getMock('Composer\Repository\InstalledRepositoryInterface');
-        $this->io = $this->getMock('Composer\IO\IOInterface');
+        $this->repository = $this->getMockBuilder('Composer\Repository\InstalledRepositoryInterface');
+        $this->io = $this->getMockBuilder('Composer\IO\IOInterface');
 
         $this->dataManager = $this->getMockBuilder('LEtudiant\Composer\Data\Package\SharedPackageDataManager')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMockBuilder()
         ;
 
         $vendorDirParams = explode(DIRECTORY_SEPARATOR, $this->vendorDir);
@@ -417,7 +417,7 @@ class SharedPackageInstallerTest extends TestCase
         ;
 
         /** @var SymlinkFilesystem|\PHPUnit_Framework_MockObject_MockObject $filesystem */
-        $filesystem = $this->getMock('\LEtudiant\Composer\Util\SymlinkFilesystem');
+        $filesystem = $this->getMockBuilder('\LEtudiant\Composer\Util\SymlinkFilesystem');
         $filesystem
             ->expects($this->once())
             ->method('removeSymlink')
@@ -467,7 +467,7 @@ class SharedPackageInstallerTest extends TestCase
         ;
 
         /** @var SymlinkFilesystem|\PHPUnit_Framework_MockObject_MockObject $filesystem */
-        $filesystem = $this->getMock('\LEtudiant\Composer\Util\SymlinkFilesystem');
+        $filesystem = $this->getMockBuilder('\LEtudiant\Composer\Util\SymlinkFilesystem');
         $filesystem
             ->expects($this->once())
             ->method('removeSymlink')
@@ -564,7 +564,7 @@ class SharedPackageInstallerTest extends TestCase
 
         $config = $this->getMockBuilder('LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMockBuilder()
         ;
 
         $config
@@ -618,7 +618,7 @@ class SharedPackageInstallerTest extends TestCase
         /** @var Package|\PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->getMockBuilder('Composer\Package\Package')
             ->setConstructorArgs(array(md5(mt_rand()), 'dev-develop', 'dev-develop'))
-            ->getMock()
+            ->getMockBuilder()
         ;
 
         $package

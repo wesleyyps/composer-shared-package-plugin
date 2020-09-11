@@ -39,7 +39,7 @@ class SharedPackageSolverTest extends TestCase
 
         $this->config = $this->getMockBuilder('LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMockBuilder()
         ;
     }
 
@@ -219,7 +219,7 @@ class SharedPackageSolverTest extends TestCase
      */
     public function createPackageMock($prettyName = null, $type = null)
     {
-        $package = $this->getMock('Composer\Package\PackageInterface');
+        $package = $this->getMockBuilder('Composer\Package\PackageInterface');
 
         if (null != $prettyName) {
             $package

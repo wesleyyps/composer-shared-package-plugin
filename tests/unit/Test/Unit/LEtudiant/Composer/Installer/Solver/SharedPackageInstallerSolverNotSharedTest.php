@@ -47,10 +47,10 @@ class SharedPackageInstallerSolverNotSharedTest extends TestCase
 
         $this->installer = $this->getMockBuilder('\Composer\Installer\LibraryInstaller')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMockBuilder()
         ;
 
-        $this->repository = $this->getMock('\Composer\Repository\InstalledRepositoryInterface');
+        $this->repository = $this->getMockBuilder('\Composer\Repository\InstalledRepositoryInterface');
     }
 
     /**
@@ -150,7 +150,7 @@ class SharedPackageInstallerSolverNotSharedTest extends TestCase
         /** @var SharedPackageInstaller|\PHPUnit_Framework_MockObject_MockObject $symlinkInstaller */
         $symlinkInstaller = $this->getMockBuilder('\LEtudiant\Composer\Installer\SharedPackageInstaller')
             ->disableOriginalConstructor()
-            ->getMock()
+            ->getMockBuilder()
         ;
 
         $config = new SharedPackageInstallerConfig('foo', 'bar', array(
@@ -169,7 +169,7 @@ class SharedPackageInstallerSolverNotSharedTest extends TestCase
     {
         return $this->getMockBuilder('Composer\Package\Package')
             ->setConstructorArgs(array(md5(mt_rand()), '1.0.0.0', '1.0.0'))
-            ->getMock()
+            ->getMockBuilder()
         ;
     }
 }

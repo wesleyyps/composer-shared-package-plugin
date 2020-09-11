@@ -56,7 +56,7 @@ class SharedPackagePluginTest extends TestCase
         $this->composer->setConfig($config);
 
         /** @var RootPackageInterface|\PHPUnit_Framework_MockObject_MockObject $package */
-        $package = $this->getMock('Composer\Package\RootPackageInterface');
+        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface');
         $package
             ->expects($this->any())
             ->method('getExtra')
@@ -68,10 +68,10 @@ class SharedPackagePluginTest extends TestCase
         ;
         $this->composer->setPackage($package);
 
-        $this->im = $this->getMock('Composer\Installer\InstallationManager');
+        $this->im = $this->getMockBuilder('Composer\Installer\InstallationManager');
         $this->composer->setInstallationManager($this->im);
 
-        $this->io = $this->getMock('Composer\IO\IOInterface');
+        $this->io = $this->getMockBuilder('Composer\IO\IOInterface');
     }
 
     /**
