@@ -108,7 +108,7 @@ class SharedPackageInstallerTest extends TestCase
 
         $this->composer->setConfig($composerConfig);
 
-        $this->im = $this->getMockBuilder('Composer\Installer\InstallationManager');
+        $this->im = $this->getMockBuilder('Composer\Installer\InstallationManager')->getMock();
         $this->composer->setInstallationManager($this->im);
 
         $this->vendorDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'composer-test-vendor';
@@ -127,8 +127,7 @@ class SharedPackageInstallerTest extends TestCase
         ));
 
         $this->dm = $this->getMockBuilder('Composer\Downloader\DownloadManager')
-            ->disableOriginalConstructor()
-            ->getMockBuilder()
+            ->disableOriginalConstructor();
         ;
         $this->composer->setDownloadManager($this->dm);
 
@@ -140,7 +139,7 @@ class SharedPackageInstallerTest extends TestCase
         );
 
         /** @var RootPackage|\PHPUnit_Framework_MockObject_MockObject $package */
-        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface');
+        $package = $this->getMockBuilder('Composer\Package\RootPackageInterface')->getMock();
         $package
             ->expects($this->any())
             ->method('getExtra')
@@ -153,7 +152,7 @@ class SharedPackageInstallerTest extends TestCase
 
         $this->dataManager = $this->getMockBuilder('LEtudiant\Composer\Data\Package\SharedPackageDataManager')
             ->disableOriginalConstructor()
-            ->getMockBuilder()
+            ->getMock()
         ;
 
         $vendorDirParams = explode(DIRECTORY_SEPARATOR, $this->vendorDir);
@@ -564,7 +563,7 @@ class SharedPackageInstallerTest extends TestCase
 
         $config = $this->getMockBuilder('LEtudiant\Composer\Installer\Config\SharedPackageInstallerConfig')
             ->disableOriginalConstructor()
-            ->getMockBuilder()
+            ->getMock()
         ;
 
         $config
@@ -618,7 +617,7 @@ class SharedPackageInstallerTest extends TestCase
         /** @var Package|\PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->getMockBuilder('Composer\Package\Package')
             ->setConstructorArgs(array(md5(mt_rand()), 'dev-develop', 'dev-develop'))
-            ->getMockBuilder()
+            ->getMock()
         ;
 
         $package

@@ -53,9 +53,14 @@ class SharedPackageInstallerConfigTest extends TestCase
      */
     public function getVendorDir($vendorDirPath)
     {
-        $this->assertEquals(sys_get_temp_dir() . '/composer-test-dependencies-dir', $this->createInstallerConfig(array(
+
+        $installerDir = $this->createInstallerConfig(array(
             'vendor-dir' => $vendorDirPath
-        ))->getVendorDir());
+        ), false)->getVendorDir();
+
+        $systemDir = sys_get_temp_dir() . '/composer-test-dependencies-dir';
+
+        $this->assertEquals($systemDir, $installerDir);
     }
 
     /**
@@ -323,6 +328,7 @@ class SharedPackageInstallerConfigTest extends TestCase
      */
     protected function createInstallerConfig(array $extra, $relativeDir = 'composer-test-vendor-dir', $absoluteDir = null)
     {
+
         if (null == $absoluteDir) {
             $absoluteDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $relativeDir;
         }

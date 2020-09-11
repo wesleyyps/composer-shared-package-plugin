@@ -47,10 +47,10 @@ class SharedPackageInstallerSolverSharedTest extends SharedPackageInstallerSolve
 
         $this->installer = $this->getMockBuilder('\LEtudiant\Composer\Installer\SharedPackageInstaller')
             ->disableOriginalConstructor()
-            ->getMockBuilder()
+            ->getMock()
         ;
 
-        $this->repository = $this->getMockBuilder('\Composer\Repository\InstalledRepositoryInterface');
+        $this->repository = $this->getMockBuilder('\Composer\Repository\InstalledRepositoryInterface')->getMock();
     }
 
     /**
@@ -61,7 +61,7 @@ class SharedPackageInstallerSolverSharedTest extends SharedPackageInstallerSolve
         /** @var LibraryInstaller|\PHPUnit_Framework_MockObject_MockObject $defaultInstaller */
         $defaultInstaller = $this->getMockBuilder('\Composer\Installer\LibraryInstaller')
             ->disableOriginalConstructor()
-            ->getMockBuilder()
+            ->getMock()
         ;
 
         $config = new SharedPackageInstallerConfig('foo', 'bar', array(
@@ -175,7 +175,7 @@ class SharedPackageInstallerSolverSharedTest extends SharedPackageInstallerSolve
         /** @var Package|\PHPUnit_Framework_MockObject_MockObject $package */
         $package = $this->getMockBuilder('Composer\Package\Package')
             ->setConstructorArgs(array(md5(mt_rand()), 'dev-develop', 'dev-develop'))
-            ->getMockBuilder()
+            ->getMock()
         ;
 
         $package
