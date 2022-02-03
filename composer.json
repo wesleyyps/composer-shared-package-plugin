@@ -1,5 +1,5 @@
 {
-    "name": "microweber-deps/composer-shared-package-plugin",
+    "name": "hometownticketing/composer-shared-package-plugin",
     "description": "This composer plugin allows you to share selected packages between your projects with symlinks.",
     "type": "composer-plugin",
     "license": "MIT",
@@ -11,12 +11,15 @@
         {
             "name": "Bozhidar Slaveykov",
             "email": "bobi@microweber.com"
+        },
+        {
+            "name": "Wesley Haines",
+            "email": "wes@hometownticketing.com"
         }
     ],
     "support": {
-        "issues": "https://github.com/microweber-deps/composer-shared-package-plugin/issues"
+        "issues": "https://github.com/hometownticketing/composer-shared-package-plugin/issues"
     },
-
     "autoload": {
         "psr-0": {
             "LEtudiant\\Composer\\": "src/"
@@ -29,8 +32,11 @@
         "class": "LEtudiant\\Composer\\SharedPackagePlugin"
     },
     "require": {
-        "composer/composer": "^1.10",
-        "composer-plugin-api": "^1.1",
+        "php": ">=7.3.0",
+        "composer-plugin-api": ">=1.1.0"
+    },
+    "require-dev": {
+        "composer/composer": ">=1.9",
         "phpunit/phpunit": "^9.3"
     }
 }

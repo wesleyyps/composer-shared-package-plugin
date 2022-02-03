@@ -60,16 +60,16 @@ class SymlinkFilesystem extends Filesystem
     }
     
      public function symlink($target, $link) {
-          if ($_SERVER['WINDIR'] || $_SERVER['windir']) {
-                exec('junction "' . $link . '" "' . $target . '"');
+          if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+                exec('junction ' . escapeshellarg($link) . ' ' . escapeshellarg($target));
           } else {
-                symlink($target,$link);
+                symlink($target, $link);
           }
     }
 
     public function unlink($link) {
-      if ($_SERVER['WINDIR'] || $_SERVER['windir']) {
-            exec('junction -d "' . $link . '"');
+      if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            exec('junction -d ' . escapeshellarg($link));
       } else {
             unlink($link);
       }
