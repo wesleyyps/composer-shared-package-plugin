@@ -37,6 +37,7 @@ class SymlinkFilesystem extends Filesystem
         return false;
     }
 
+
     /**
      * @param string $symlinkPath
      *
@@ -61,17 +62,17 @@ class SymlinkFilesystem extends Filesystem
     
      public function symlink($target, $link) {
           if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-                exec('junction ' . escapeshellarg($link) . ' ' . escapeshellarg($target));
+                return exec('junction ' . escapeshellarg($link) . ' ' . escapeshellarg($target));
           } else {
-                symlink($target, $link);
+                return symlink($target, $link);
           }
     }
 
     public function unlink($link) {
       if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-            exec('junction -d ' . escapeshellarg($link));
+            return exec('junction -d ' . escapeshellarg($link));
       } else {
-            unlink($link);
+            return unlink($link);
       }
     }
 

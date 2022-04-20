@@ -18,18 +18,12 @@ use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use LEtudiant\Composer\Installer\SharedPackageInstaller;
-use LEtudiant\Composer\Util\SymlinkFilesystem;
 
 /**
  * @author Sylvain Lorinet <sylvain.lorinet@gmail.com>
  */
 class SharedPackageInstallerSolver implements InstallerInterface
 {
-    /**
-     * @var SymlinkFilesystem
-     */
-    protected $filesystem;
-
     /**
      * @var SharedPackageSolver
      */
@@ -85,10 +79,10 @@ class SharedPackageInstallerSolver implements InstallerInterface
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         if ($this->solver->isSharedPackage($package)) {
-            $this->symlinkInstaller->install($repo, $package);
-        } else {
-            $this->defaultInstaller->install($repo, $package);
+            return $this->symlinkInstaller->install($repo, $package);
         }
+
+        return $this->defaultInstaller->install($repo, $package);
     }
 
     /**
@@ -163,8 +157,11 @@ class SharedPackageInstallerSolver implements InstallerInterface
      */
     public function download(PackageInterface $package, PackageInterface $prevPackage = null)
     {
-        // NOOP
-        return null;
+        if ($this->solver->isSharedPackage($package)) {
+            return $this->symlinkInstaller->download($package, $prevPackage);
+        }
+
+        return $this->defaultInstaller->download($package, $prevPackage);
     }
 
     /**
@@ -182,8 +179,11 @@ class SharedPackageInstallerSolver implements InstallerInterface
      */
     public function prepare($type, PackageInterface $package, PackageInterface $prevPackage = null)
     {
-        // NOOP
-        return null;
+        if ($this->solver->isSharedPackage($package)) {
+            return $this->symlinkInstaller->prepare($type, $package, $prevPackage);
+        }
+
+        return $this->defaultInstaller->prepare($type, $package, $prevPackage);
     }
 
     /**
@@ -200,7 +200,10 @@ class SharedPackageInstallerSolver implements InstallerInterface
      */
     public function cleanup($type, PackageInterface $package, PackageInterface $prevPackage = null)
     {
-        // NOOP
-        return null;
+        if ($this->solver->isSharedPackage($package)) {
+            return $this->symlinkInstaller->cleanup($type, $package, $prevPackage);
+        }
+
+        return $this->defaultInstaller->cleanup($type, $package, $prevPackage);
     }
 }

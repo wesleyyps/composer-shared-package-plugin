@@ -30,7 +30,7 @@ use LEtudiant\Composer\Util\SymlinkFilesystem;
 class SharedPackageInstaller extends LibraryInstaller
 {
     const PACKAGE_TYPE = 'shared-package';
-    const PACKAGE_PRETTY_NAME = 'letudiant/composer-shared-package-plugin';
+    const PACKAGE_PRETTY_NAME = 'hometownticketing/composer-shared-package-plugin';
 
     /**
      * @var SharedPackageInstallerConfig
@@ -105,18 +105,32 @@ class SharedPackageInstaller extends LibraryInstaller
      * @param InstalledRepositoryInterface $repo
      * @param PackageInterface             $package
      */
+    
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        if (!is_readable($this->getInstallPath($package))) {
-            parent::install($repo, $package);
+        if (!$this->filesystem->isReadable($this->getInstallPath($package)) || $this->filesystem->isDirEmpty($this->getInstallPath($package))) {
+            $prom = parent::install($repo, $package);
         } elseif (!$repo->hasPackage($package)) {
-            $this->binaryInstaller->installBinaries($package, $this->getInstallPath($package));
-            $repo->addPackage(clone $package);
+
+            $prom = \React\Promise\resolve();
+            $binaryInstaller = $this->binaryInstaller;
+            $installPath = $this->getInstallPath($package);
+    
+            $prom = $prom->then(function () use ($binaryInstaller, $installPath, $package, $repo) {
+                $binaryInstaller->installBinaries($package, $installPath);
+                if (!$repo->hasPackage($package)) {
+                    $repo->addPackage(clone $package);
+                }
+            });
         }
 
-        $this->createPackageVendorSymlink($package);
-        $this->packageDataManager->addPackageUsage($package);
+        $prom = $prom->then(function() use ($package) {
+            $this->createPackageVendorSymlink($package);
+            $this->packageDataManager->addPackageUsage($package);
+        });
+        return $prom;
     }
+    
 
     /**
      * @param InstalledRepositoryInterface $repo
@@ -144,16 +158,21 @@ class SharedPackageInstaller extends LibraryInstaller
 
         // The package need only a code update because the version (branch), only the commit changed
         if ($this->getInstallPath($initial) === $this->getInstallPath($target)) {
-            $this->createPackageVendorSymlink($target);
-
-            parent::update($repo, $initial, $target);
+            $prom = parent::update($repo, $initial, $target)
+            ->then(function() use ($target) {
+                    $this->createPackageVendorSymlink($target);
+            });
+            return $prom;
         } else {
             // If the initial package sources folder exists, uninstall it
             $this->composer->getInstallationManager()->uninstall($repo, new UninstallOperation($initial));
-
+            
             // Install the target package
             $this->composer->getInstallationManager()->install($repo, new InstallOperation($target));
+
+            $prom = \React\Promise\resolve();
         }
+        return $prom;
     }
 
     /**
@@ -173,14 +192,18 @@ class SharedPackageInstaller extends LibraryInstaller
             )) {
             $this->packageDataManager->setPackageInstallationSource($package);
 
-            parent::uninstall($repo, $package);
+            $prom = parent::uninstall($repo, $package);
         } else {
             $this->binaryInstaller->removeBinaries($package);
             $repo->removePackage($package);
+            $prom = \React\Promise\resolve();
         }
 
-        $this->packageDataManager->removePackageUsage($package);
-        $this->removePackageVendorSymlink($package);
+        $prom = $prom->then(function() use ($package) {
+            $this->packageDataManager->removePackageUsage($package);
+            $this->removePackageVendorSymlink($package);
+        });
+        return $prom;
     }
 
     /**
@@ -207,12 +230,33 @@ class SharedPackageInstaller extends LibraryInstaller
                 $this->getPackageVendorSymlink($package)
             )
         ) {
-            $this->io->write(array(
-                '  - Creating symlink for <info>' . $package->getPrettyName()
-                . '</info> (<fg=yellow>' . $package->getPrettyVersion() . '</fg=yellow>)',
-                ''
-            ));
+            $this->io->write('  - Creating symlink for <info>' . $package->getPrettyName()
+                . '</info> (<fg=yellow>' . $package->getPrettyVersion() . '</fg=yellow>)');
         }
+
+        // Clean up after ourselves in Composer 2+
+        $vendorDirJunk = rtrim($this->composer->getConfig()->get('vendor-dir'), '/')
+        . DIRECTORY_SEPARATOR . $package->getPrettyName();
+        try {
+            rmdir($vendorDirJunk);
+            rmdir(dirname($vendorDirJunk));
+        } catch(\Throwable $e) {}
+
+    }
+    protected function getDirContents($dir, &$results = array()) {
+        $files = scandir($dir);
+    
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = $path;
+            } else if ($value != "." && $value != "..") {
+                $this->getDirContents($path, $results);
+                $results[] = $path;
+            }
+        }
+    
+        return $results;
     }
 
     /**
@@ -248,11 +292,8 @@ class SharedPackageInstaller extends LibraryInstaller
             $this->config->isSymlinkEnabled()
             && $this->filesystem->removeSymlink($this->getPackageVendorSymlink($package))
         ) {
-            $this->io->write(array(
-                '  - Deleting symlink for <info>' . $package->getPrettyName() . '</info> '
-                . '(<fg=yellow>' . $package->getPrettyVersion() . '</fg=yellow>)',
-                ''
-            ));
+            $this->io->write('  - Deleting symlink for <info>' . $package->getPrettyName() . '</info> '
+                . '(<fg=yellow>' . $package->getPrettyVersion() . '</fg=yellow>)');
 
             $symlinkParentDirectory = dirname($this->getPackageVendorSymlink($package));
             $this->filesystem->removeEmptyDirectory($symlinkParentDirectory);
