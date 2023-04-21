@@ -1,5 +1,5 @@
 {
-    "name": "hometownticketing/composer-shared-package-plugin",
+    "name": "wesleyyps/composer-shared-package-plugin",
     "description": "This composer plugin allows you to share selected packages between your projects with symlinks.",
     "type": "composer-plugin",
     "license": "MIT",
